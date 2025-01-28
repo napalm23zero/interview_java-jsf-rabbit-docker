@@ -1,0 +1,148 @@
+{
+	"folders": [
+		{
+			"path": "../",
+			"name": "interview-jsf-rabbit-docker",
+		},
+	],
+	"settings": {
+		// Window and UI Settings
+		"window.title": "interview-jsf-rabbit-docker",
+		"window.zoomLevel": -1,
+		"workbench.colorTheme": "One Dark Pro Darker",
+		"workbench.iconTheme": "material-icon-theme",
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#171d65",
+			"titleBar.activeBackground": "#171d65",
+			"titleBar.activeForeground": "#ffffff",
+			"titleBar.border": "#333333"
+		},
+		// Editor Settings
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		// Java Development Settings
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"java.debug.settings.onBuildFailureProceed": true,
+		"maven.terminal.useJavaHome": true,
+		// Terminal Configuration
+		"terminal.integrated.defaultProfile.linux": "bash",
+		"terminal.integrated.cursorStyle": "line",
+		"terminal.integrated.cursorBlinking": true,
+		// Debug and Git Settings
+		"debug.console.wordWrap": false,
+		"debug.internalConsoleOptions": "openOnSessionStart",
+		"git.autofetch": "all",
+	},
+	// Launch Configuration
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "java",
+				"name": "PRODUCER",
+				"request": "launch",
+				"mainClass": "fish.payara.micro.PayaraMicro",
+				"projectName": "jsf-rabbitmq-producer",
+				"preLaunchTask": "build-producer",
+				"console": "internalConsole",
+				"env": {
+					"MICRO_JAR": "${workspaceFolder}/jsf-rabbitmq-producer/target/jsf-rabbitmq-producer-microbundle.jar",
+					"RABBITMQ_HOST": "rabbitmq",
+					"RABBITMQ_PORT": "5672",
+					"RABBITMQ_USERNAME": "guest",
+					"RABBITMQ_PASSWORD": "guest",
+					"RABBITMQ_QUEUE": "jsfQueue"
+				},
+				"args": [
+					"--deploy",
+					"${workspaceFolder}/jsf-rabbitmq-producer/target/jsf-rabbitmq-producer.war",
+					"--port",
+					"8080",
+					"--contextroot",
+					"/jsf-rabbitmq-producer",
+					"--nocluster",
+					"--autoBindHttp"
+				],
+				"vmArgs": [
+					"--add-modules=java.se",
+					"--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED",
+					"--add-opens=java.base/java.lang=ALL-UNNAMED",
+					"--add-opens=java.base/java.net=ALL-UNNAMED",
+					"--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED",
+					"--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+					"-Xmx512m",
+					"-Xms256m"
+				],
+			},
+			{
+                "type": "java",
+                "name": "CONSUMER",
+                "request": "launch",
+                "mainClass": "fish.payara.micro.PayaraMicro",
+                "projectName": "jsf-rabbitmq-consumer",
+                "preLaunchTask": "build-consumer",
+				"console": "internalConsole",
+                "env": {
+                    "MICRO_JAR": "${workspaceFolder}/jsf-rabbitmq-consumer/target/jsf-rabbitmq-consumer-microbundle.jar",
+                    "RABBITMQ_HOST": "rabbitmq",
+                    "RABBITMQ_PORT": "5672",
+                    "RABBITMQ_USERNAME": "guest",
+                    "RABBITMQ_PASSWORD": "guest",
+                    "RABBITMQ_QUEUE": "jsfQueue"
+                },
+                "args": [
+                    "--deploy",
+                    "${workspaceFolder}/jsf-rabbitmq-consumer/target/jsf-rabbitmq-consumer.war",
+                    "--port",
+                    "8081",
+                    "--contextroot",
+                    "/jsf-rabbitmq-consumer",
+                    "--nocluster",
+                    "--autoBindHttp"
+                ],
+                "vmArgs": [
+                    "--add-modules=java.se",
+                    "--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED",
+                    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens=java.base/java.net=ALL-UNNAMED",
+                    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED",
+                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                    "-Xmx512m",
+                    "-Xms256m"
+                ]
+            }
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "build-producer",
+				"type": "shell",
+				"command": "mvn clean package",
+				"options": {
+					"cwd": "${workspaceFolder}/jsf-rabbitmq-producer"
+				},
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				},
+				"problemMatcher": []
+			},
+			{
+                "label": "build-consumer",
+                "type": "shell",
+                "command": "mvn clean package",
+                "options": {
+                    "cwd": "${workspaceFolder}/jsf-rabbitmq-consumer"
+                },
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "problemMatcher": []
+            }
+		]
+	}
+}

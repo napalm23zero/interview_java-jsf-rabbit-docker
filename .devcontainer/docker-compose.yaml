@@ -1,0 +1,56 @@
+services:
+
+  # both Producer and Consumer services
+  backend:
+    build:
+      context: ..
+      dockerfile: .devcontainer/docker/backend.Dockerfile
+    container_name: backend
+    depends_on:
+      - rabbitmq # The producer relies on RabbitMQ to exist. Order matters here, like coffee before code.
+    volumes:
+      - ../:/workspace:cached # Here where the magic happens, we mount the root directory to the workspace directory
+      - ~/.ssh:/root/.ssh # Map host's .ssh directory to container's .ssh directory as read-only
+      - ${USERPROFILE}/.ssh:/root/.ssh # same as above, in case you're using Windows (you are disgusting)
+    ports:
+      - '127.0.0.1:${PRODUCER_EXTERNAL_PORT}:${PRODUCER_INTERNAL_PORT}' # Exposing the producer
+      - '127.0.0.1:${CONSUMER_EXTERNAL_PORT}:${CONSUMER_INTERNAL_PORT}' # Exposing the consumer
+    networks:
+      - hustletech
+    env_file:
+      - .env # Load environment variables for devcontainer
+    environment:
+      - JAVA_OPTS=-Xmx512m # Give Java some breathing room. No one likes a cranky JVM.
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m' # No one likes logs taking over their disk space.
+        max-file: '3'    # Keep logs organized. Three is the magic number.
+
+  # RabbitMQ service
+  rabbitmq:
+    build:
+      context: ..
+      dockerfile: .devcontainer/docker/rabbit.Dockerfile
+    container_name: rabbitmq
+    ports:
+      - '${RABBITMQ_AMQP_EXTERNAL_PORT}:${RABBITMQ_AMQP_INTERNAL_PORT}' # AMQP protocol. The heartbeat of your messaging.
+      - '${RABBITMQ_MANAGEMENT_EXTERNAL_PORT}:${RABBITMQ_MANAGEMENT_INTERNAL_PORT}' # Management UI. Keep an eye on RabbitMQ's health.
+    networks:
+      - hustletech
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq # Persist RabbitMQ's data. Messages are precious.
+    env_file:
+      - .env # Load environment variables for RabbitMQ
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+volumes:
+  rabbitmq-data:
+
+networks:
+  hustletech:
+    driver: bridge # All services connected here, chatting away like a nerdy LAN party.

@@ -1,0 +1,32 @@
+{
+    "name": "interview-jsf-rabbit-docker",
+    "dockerComposeFile": "./docker-compose.yaml",
+    "service": "backend", 
+    "workspaceFolder": "/workspace",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+            "mhutchie.git-graph",
+            "GitHub.copilot",
+            "GitHub.copilot-chat",
+            "VisualStudioExptTeam.vscodeintellicode",
+            "VisualStudioExptTeam.intellicode-api-usage-examples",
+            "esbenp.prettier-vscode",
+            "WakaTime.vscode-wakatime",
+            "aaron-bond.better-comments",
+            "PKief.material-icon-theme",
+            "zhuangtongfa.material-theme",
+            "redhat.java",
+            "vscjava.vscode-java-debug",
+            "vscjava.vscode-maven",
+            "vscjava.vscode-java-test",
+            "SonarSource.sonarlint-vscode",
+            "redhat.fabric8-analytics",
+            "redhat.vscode-yaml",
+            "redhat.vscode-xml",
+            "cweijan.vscode-database-client2"
+        ]     
+    }
+  }
+}
+  

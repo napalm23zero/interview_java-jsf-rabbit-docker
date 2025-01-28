@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    
+    <h:head>
+        <title>Message Consumer</title>
+        <h:outputStylesheet name="css/styles.css"/>
+        <h:outputScript name="js/websocket-client.js" target="head"/>
+    </h:head>
+    
+    <h:body>
+        <div class="container">
+            <h1>RabbitMQ Messages</h1>
+            <div id="connection-status" class="status">Connecting...</div>
+            <div id="messages" class="message-container">
+                <!-- Messages will be inserted here dynamically -->
+            </div>
+        </div>
+    </h:body>
+</html>
