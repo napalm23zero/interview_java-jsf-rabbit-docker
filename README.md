@@ -1,7 +1,10 @@
 # Java JSF RabbitMQ Docker Demo
 
 ## About the Author
-Hi! I'm Rodrigo Dantas, a Software Engineer. This project demonstrates my coding style and architecture approach using:
+Hi! I'm Rodrigo Dantas, a Software Engineer. 
+Check my LinkedIn profile<br><a>https://www.linkedin.com/in/dantas-rodrigo/</a>
+
+This project demonstrates my coding style and architecture approach using:
 
 - Java Server Faces (JSF)
 - RabbitMQ Message Broker
